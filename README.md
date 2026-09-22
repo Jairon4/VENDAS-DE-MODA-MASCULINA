@@ -105,6 +105,7 @@ VENDAS-DE-MODA-MASCULINA/
 │
 └── 📄 README.md
 
+Link do projeto: https://jairon4.github.io/VENDAS-DE-MODA-MASCULINA/
 
 A estrutura acima representa a organização recomendada; os nomes e diretórios devem ser ajustados caso o repositório tenha uma estrutura diferente.
 
@@ -178,9 +179,3 @@ Se este projeto foi útil ou interessante para você, considere deixar uma ⭐ n
 <br> <img src="https://capsule-render.vercel.app/api?type=waving&color=00A8FF&height=100&section=footer"/>
 
 Desenvolvido por Jairon • 2026
-
-</div> :::{"fallbackMarkdown":"","reference":{"matched_text":" ","prefix":null,"start_idx":5414,"end_idx":5414,"safe_urls":[],"refs":[],"alt":"","prompt_text":null,"type":"sources_footnote","sources":[{"title":"Internal Error","url":"","attribution":"Desculpe, não consegui identificar o site."}],"has_images":false},"showLoginRequiredCard":false}
-
-
-
-Link do projeto: https://jairon4.github.io/VENDAS-DE-MODA-MASCULINA/
