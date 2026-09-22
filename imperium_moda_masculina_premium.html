@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMPERIUM | Moda Masculina Premium & Tailoring</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#D4AF37',
+                            500: '#C5A028',
+                            600: '#B08C1E',
+                            700: '#8A6D14'
+                        },
+                        obsidian: {
+                            800: '#18181b',
+                            900: '#0f0f11',
+                            950: '#070708'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS Styles -->
+    <style>
+        /* Custom scrollbar styling for high-end look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF 0%, #D4AF37 50%, #9A7B1C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(24, 24, 27, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans min-h-full flex flex-col selection:bg-gold-500 selection:text-black">
+
+    <!-- Top Announcement Bar -->
+    <div id="top-bar" class="bg-gradient-to-r from-zinc-900 via-gold-700 to-zinc-900 text-xs py-2 px-4 text-center tracking-widest uppercase font-semibold text-zinc-200 border-b border-zinc-800 flex justify-between items-center">
+        <div class="hidden md:flex items-center space-x-4 text-zinc-300 text-[11px]">
+            <span><i class="fa-solid fa-truck-fast text-gold-400 mr-1"></i> Frete Grátis acima de R$ 399</span>
+            <span><i class="fa-solid fa-shield-halved text-gold-400 mr-1"></i> Compra 100% Segura & Garantida</span>
+        </div>
+        <div class="w-full md:w-auto text-center font-bold">
+            ⚡ ESTOQUE COMPLETO DISPONÍVEL: <span class="text-gold-400 underline font-mono" id="top-bar-count">5.000 PEÇAS EM CATÁLOGO</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-4 text-zinc-300 text-[11px]">
+            <button onclick="toggleAdminView()" class="hover:text-gold-400 transition-colors flex items-center gap-1">
+                <i class="fa-solid fa-gauge-high"></i> Painel Admin / Gestão
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-zinc-800 transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Brand Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="resetFiltersAndHome()">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-400 to-gold-700 flex items-center justify-center font-serif text-zinc-950 text-xl font-bold shadow-lg shadow-gold-500/20">
+                        I
+                    </div>
+                    <div>
+                        <span class="font-serif text-2xl font-bold tracking-wider gold-gradient-text block leading-none">IMPERIUM</span>
+                        <span class="text-[9px] tracking-[0.3em] text-zinc-400 uppercase block mt-1">Moda Masculina Premium</span>
+                    </div>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden lg:flex flex-1 max-w-md mx-8 relative">
+                    <input type="text" id="global-search" oninput="handleSearchInput(this.value)" placeholder="Buscar entre 5.000+ peças masculinas (ex: Terno, Polo, Couro)..." class="w-full bg-zinc-900/90 text-sm border border-zinc-700/80 rounded-full py-2.5 pl-10 pr-10 focus:outline-none focus:border-gold-500 text-zinc-100 placeholder-zinc-500 transition-all shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-400 text-sm"></i>
+                    <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3.5 top-3 text-zinc-400 hover:text-white text-sm">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+
+                    <!-- Instant Search Suggestions Dropdown -->
+                    <div id="search-suggestions" class="hidden absolute left-0 right-0 top-12 bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl overflow-hidden z-50 max-h-96 overflow-y-auto divide-y divide-zinc-800">
+                    </div>
+                </div>
+
+                <!-- Navigation Quick Actions & Cart -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="toggleAdminView()" class="p-2 sm:px-3 sm:py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 hover:border-gold-500/50 hover:text-gold-400 transition flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-gold-400"></i>
+                        <span class="hidden sm:inline">Painel Lojista</span>
+                    </button>
+
+                    <button onclick="toggleWishlistDrawer()" class="relative p-2.5 rounded-lg hover:bg-zinc-900 text-zinc-300 hover:text-gold-400 transition" title="Lista de Desejos">
+                        <i class="fa-regular fa-heart text-lg"></i>
+                        <span id="wishlist-badge" class="absolute top-1 right-1 bg-gold-500 text-zinc-950 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                    </button>
+
+                    <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-100 hover:border-gold-500 transition flex items-center gap-2 group">
+                        <i class="fa-solid fa-bag-shopping text-gold-400 group-hover:scale-110 transition-transform"></i>
+                        <span class="font-medium text-xs hidden sm:inline">Carrinho</span>
+                        <span id="cart-badge" class="bg-gold-500 text-zinc-950 font-bold text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-lg hover:bg-zinc-900 text-zinc-300">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 lg:hidden relative">
+                <input type="text" id="mobile-search" oninput="handleSearchInput(this.value)" placeholder="Pesquisar 5.000+ produtos..." class="w-full bg-zinc-900 text-sm border border-zinc-800 rounded-lg py-2 pl-9 pr-8 focus:outline-none focus:border-gold-500 text-zinc-200 placeholder-zinc-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-4 text-zinc-500 text-xs"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section id="hero-banner" class="relative bg-zinc-900 overflow-hidden border-b border-zinc-800">
+        <div class="absolute inset-0 z-0 opacity-30 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?auto=format&fit=crop&w=1800&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/90 to-transparent z-10"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 relative z-20">
+            <div class="max-w-2xl">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-gold-500/10 border border-gold-500/30 text-gold-400 mb-4">
+                    <i class="fa-solid fa-crown text-[10px]"></i> Coleção Outono / Inverno 2026 - Alta Sapataria & Alfaiataria
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-white leading-tight">
+                    Elegância Imposta. <br><span class="gold-gradient-text">Sem Falhas.</span>
+                </h1>
+                <p class="mt-4 text-zinc-400 text-base sm:text-lg max-w-xl">
+                    Explore nosso inventário completo e unificado com mais de <strong>4.999 peças masculinas</strong> em pronta entrega. Ternos italianos, camisetas Pima, calçados em couro legítimo e acessórios premium.
+                </p>
+                <div class="mt-8 flex flex-wrap items-center gap-4">
+                    <a href="#catalog-section" class="px-8 py-3.5 rounded-lg bg-gradient-to-r from-gold-500 to-gold-600 text-zinc-950 font-bold text-sm tracking-wide shadow-xl shadow-gold-500/20 hover:scale-105 active:scale-95 transition-all">
+                        EXPLORAR CATÁLOGO COMPLETO
+                    </a>
+                    <button onclick="filterByCategory('Ternos & Alfaiataria')" class="px-6 py-3.5 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-gold-500 text-zinc-200 text-sm font-semibold transition">
+                        Alfaiataria Fina
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric badges bar -->
+        <div class="bg-zinc-900/90 border-t border-zinc-800 py-4 relative z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center divide-x divide-zinc-800">
+                <div>
+                    <span class="block text-xl font-bold font-mono text-gold-400" id="stat-total-items">5.000</span>
+                    <span class="text-xs text-zinc-400 uppercase tracking-wider">Peças Únicas</span>
+                </div>
+                <div>
+                    <span class="block text-xl font-bold font-mono text-emerald-400">100%</span>
+                    <span class="text-xs text-zinc-400 uppercase tracking-wider">Pronta Entrega</span>
+                </div>
+                <div>
+                    <span class="block text-xl font-bold font-mono text-gold-400">4.9 ★</span>
+                    <span class="text-xs text-zinc-400 uppercase tracking-wider">Avaliação de Clientes</span>
+                </div>
+                <div>
+                    <span class="block text-xl font-bold font-mono text-zinc-100">24h</span>
+                    <span class="text-xs text-zinc-400 uppercase tracking-wider">Envio Expresso</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="catalog-section">
+        
+        <!-- Category Pill Navigation Bar -->
+        <div class="flex items-center space-x-2 overflow-x-auto pb-4 scrollbar-none border-b border-zinc-800 mb-6" id="category-pills">
+            <!-- Dynamic JS category buttons go here -->
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Sidebar Filter Panel -->
+            <aside class="w-full lg:w-72 shrink-0 space-y-6 hidden lg:block" id="filters-sidebar">
+                <div class="bg-zinc-900/80 border border-zinc-800 rounded-xl p-5 sticky top-28 space-y-6">
+                    <div class="flex items-center justify-between pb-3 border-b border-zinc-800">
+                        <h3 class="font-bold text-zinc-100 text-sm tracking-wider uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-gold-400"></i> Filtros do Catálogo
+                        </h3>
+                        <button onclick="resetAllFilters()" class="text-xs text-gold-400 hover:underline">Limpar Tudo</button>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Categoria</label>
+                        <select id="filter-category" onchange="applyFilters()" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:border-gold-500 focus:outline-none">
+                            <option value="ALL">Todas as Categorias (5.000+)</option>
+                            <option value="Camisas & Polos">Camisas & Polos</option>
+                            <option value="Camisetas & Basicas">Camisetas & Básicas</option>
+                            <option value="Ternos & Alfaiataria">Ternos & Alfaiataria</option>
+                            <option value="Calças & Jeans">Calças & Jeans</option>
+                            <option value="Casacos & Jaquetas">Casacos & Jaquetas</option>
+                            <option value="Calçados Masculinos">Calçados Masculinos</option>
+                            <option value="Acessórios & Relógios">Acessórios & Relógios</option>
+                            <option value="Moda Praia & Shorts">Moda Praia & Shorts</option>
+                        </select>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div>
+                        <div class="flex justify-between items-center text-xs text-zinc-400 mb-2">
+                            <span class="font-semibold uppercase tracking-wider">Preço Máximo</span>
+                            <span id="price-val-display" class="font-mono text-gold-400 font-bold">R$ 2.500</span>
+                        </div>
+                        <input type="range" id="filter-price" min="50" max="2500" step="50" value="2500" oninput="updatePriceDisplay(this.value)" onchange="applyFilters()" class="w-full accent-gold-500 bg-zinc-800 h-2 rounded-lg cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-zinc-500 mt-1">
+                            <span>R$ 50</span>
+                            <span>R$ 2.500+</span>
+                        </div>
+                    </div>
+
+                    <!-- Size Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Tamanho</label>
+                        <div class="grid grid-cols-4 gap-1.5" id="size-filter-grid">
+                            <!-- JS Generated Sizes -->
+                        </div>
+                    </div>
+
+                    <!-- Color Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Tom de Cor</label>
+                        <div class="flex flex-wrap gap-2" id="color-filter-container">
+                            <!-- JS Generated Color Pickers -->
+                        </div>
+                    </div>
+
+                    <!-- Brand Filter -->
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Marca / Linha</label>
+                        <select id="filter-brand" onchange="applyFilters()" class="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:border-gold-500">
+                            <option value="ALL">Todas as Marcas</option>
+                            <option value="IMPERIUM Black Edition">IMPERIUM Black Edition</option>
+                            <option value="Sartorial Italia">Sartorial Italia</option>
+                            <option value="Urban Nomad">Urban Nomad</option>
+                            <option value="Heritage 1984">Heritage 1984</option>
+                            <option value="Vanguard Tech">Vanguard Tech</option>
+                        </select>
+                    </div>
+
+                    <!-- Stock Availability Toggle -->
+                    <div class="pt-2 border-t border-zinc-800">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs text-zinc-300">
+                            <input type="checkbox" id="filter-instock" onchange="applyFilters()" checked class="rounded accent-gold-500">
+                            <span>Apenas Peças com Estoque Imediato</span>
+                        </label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Product Display Area -->
+            <div class="flex-1 min-w-0">
+                
+                <!-- Filter Bar Header & Sorting Controls -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-zinc-900/60 border border-zinc-800 rounded-xl p-4 mb-6">
+                    <div>
+                        <h2 class="text-sm font-semibold text-zinc-200">
+                            Mostrando <span id="results-count" class="font-mono text-gold-400 font-bold">5.000</span> de <span class="font-mono text-zinc-400">5.000</span> peças ativas
+                        </h2>
+                        <p class="text-xs text-zinc-500 mt-0.5" id="active-filter-summary">Visualizando inventário total sem restrições</p>
+                    </div>
+
+                    <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+                        <button onclick="toggleMobileFiltersModal()" class="lg:hidden px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-xs font-medium text-zinc-200 flex items-center gap-2">
+                            <i class="fa-solid fa-filter text-gold-400"></i> Filtros
+                        </button>
+
+                        <div class="flex items-center space-x-2">
+                            <label for="sort-select" class="text-xs text-zinc-400 whitespace-nowrap">Ordenar por:</label>
+                            <select id="sort-select" onchange="applySorting()" class="bg-zinc-950 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-zinc-200 focus:border-gold-500 focus:outline-none">
+                                <option value="popular">Mais Desejados</option>
+                                <option value="price-asc">Menor Preço</option>
+                                <option value="price-desc">Maior Preço</option>
+                                <option value="rating">Melhor Avaliados</option>
+                                <option value="discount">Maior Desconto</option>
+                                <option value="newest">Lançamentos Recentes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+                    <!-- JS Dynamically Populates 5000+ items with Pagination -->
+                </div>
+
+                <!-- Empty State Message -->
+                <div id="no-results" class="hidden text-center py-16 bg-zinc-900/40 border border-dashed border-zinc-800 rounded-2xl">
+                    <i class="fa-solid fa-shirt text-4xl text-zinc-600 mb-3"></i>
+                    <h3 class="text-lg font-bold text-zinc-300">Nenhuma peça encontrada com estes filtros</h3>
+                    <p class="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">Tente ajustar a faixa de preço, remover restrições de tamanho ou buscar por outro termo.</p>
+                    <button onclick="resetAllFilters()" class="mt-4 px-4 py-2 bg-gold-500 text-zinc-950 text-xs font-bold rounded-lg hover:bg-gold-400 transition">Resetar Filtros</button>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="mt-10 flex flex-col sm:flex-row items-center justify-between border-t border-zinc-800 pt-6 gap-4">
+                    <div class="text-xs text-zinc-400">
+                        Página <span id="current-page-num" class="font-mono text-zinc-100 font-bold">1</span> de <span id="total-pages-num" class="font-mono text-zinc-100 font-bold">157</span>
+                    </div>
+
+                    <div class="flex items-center space-x-1" id="pagination-buttons">
+                        <!-- JS Dynamic Pagination -->
+                    </div>
+
+                    <div class="text-xs text-zinc-500">
+                        Exibindo 32 peças por página
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Management Drawer/View Modal -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-5xl rounded-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-5 border-b border-zinc-800 flex justify-between items-center bg-zinc-950">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 rounded-lg bg-gold-500/10 text-gold-400 border border-gold-500/20">
+                        <i class="fa-solid fa-boxes-stacked text-lg"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-zinc-100 text-base">Painel de Gestão de Estoque IMPERIUM</h2>
+                        <p class="text-xs text-zinc-400">Controle completo sobre o inventário ativo e métricas de vendas</p>
+                    </div>
+                </div>
+                <button onclick="toggleAdminView()" class="text-zinc-400 hover:text-white text-lg p-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+                <!-- Top Metrics -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                        <span class="text-zinc-400 uppercase text-[10px] tracking-wider block">Total de SKUs Ativos</span>
+                        <span class="text-2xl font-bold font-mono text-gold-400 mt-1 block" id="admin-stat-skus">5.000</span>
+                        <span class="text-[10px] text-emerald-400 mt-1 block">100% Sincronizado</span>
+                    </div>
+                    <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                        <span class="text-zinc-400 uppercase text-[10px] tracking-wider block">Peças Físicas em Estoque</span>
+                        <span class="text-2xl font-bold font-mono text-zinc-100 mt-1 block" id="admin-stat-units">142.850</span>
+                        <span class="text-[10px] text-zinc-500 mt-1 block">Disponibilidade Imediata</span>
+                    </div>
+                    <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                        <span class="text-zinc-400 uppercase text-[10px] tracking-wider block">Valor Total do Estoque</span>
+                        <span class="text-2xl font-bold font-mono text-emerald-400 mt-1 block" id="admin-stat-value">R$ 48.910.450</span>
+                        <span class="text-[10px] text-zinc-500 mt-1 block">Valor Médio por Peça</span>
+                    </div>
+                    <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                        <span class="text-zinc-400 uppercase text-[10px] tracking-wider block">Status do Sistema</span>
+                        <span class="text-sm font-bold text-emerald-400 mt-2 block flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> OPERACIONAL SEM FALHAS
+                        </span>
+                        <span class="text-[10px] text-zinc-500 mt-1 block">Zero Erros de Estoque</span>
+                    </div>
+                </div>
+
+                <!-- Action Controls -->
+                <div class="flex flex-wrap items-center justify-between gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-800">
+                    <div class="flex items-center gap-3">
+                        <button onclick="simulateAddProduct()" class="px-3.5 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-zinc-950 font-bold transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Adicionar Nova Peça ao Catálogo
+                        </button>
+                        <button onclick="reseedDatabase()" class="px-3.5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition flex items-center gap-2">
+                            <i class="fa-solid fa-rotate"></i> Regenerar Lote de 5.000 Itens
+                        </button>
+                    </div>
+                    <input type="text" id="admin-search-input" oninput="filterAdminTable(this.value)" placeholder="Filtrar tabela admin..." class="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-1.5 text-zinc-200 placeholder-zinc-500 w-64 focus:outline-none focus:border-gold-500">
+                </div>
+
+                <!-- Admin Product Inventory Table -->
+                <div class="overflow-x-auto rounded-xl border border-zinc-800">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-zinc-950 text-zinc-400 uppercase text-[10px] font-bold border-b border-zinc-800">
+                            <tr>
+                                <th class="p-3">ID / SKU</th>
+                                <th class="p-3">Produto</th>
+                                <th class="p-3">Categoria</th>
+                                <th class="p-3">Preço</th>
+                                <th class="p-3">Estoque Unidades</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body" class="divide-y divide-zinc-800 text-zinc-300 font-mono text-[11px]">
+                            <!-- JS Generated Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail QuickView Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-3 sm:p-6">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl relative max-h-[92vh] flex flex-col md:flex-row">
+            
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-zinc-950/80 text-zinc-300 hover:text-white border border-zinc-700 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Product Image Section -->
+            <div class="w-full md:w-1/2 bg-zinc-950 relative min-h-[300px] md:min-h-full flex items-center justify-center p-4">
+                <img id="modal-img" src="" alt="" class="max-h-[450px] w-auto object-contain rounded-lg">
+                <span id="modal-badge" class="absolute top-4 left-4 px-2.5 py-1 rounded bg-gold-500 text-zinc-950 font-bold text-[10px] uppercase tracking-wider">
+                    DESTAQUE
+                </span>
+            </div>
+
+            <!-- Product Specs & Buying Options Section -->
+            <div class="w-full md:w-1/2 p-6 overflow-y-auto flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="flex items-center justify-between text-xs text-zinc-400 mb-1">
+                        <span id="modal-brand" class="uppercase font-bold tracking-widest text-gold-400">IMPERIUM</span>
+                        <span id="modal-sku" class="font-mono text-[10px]">SKU: #IMP-5000</span>
+                    </div>
+
+                    <h2 id="modal-title" class="text-xl font-serif font-bold text-white leading-tight">Camisa Polo Piquet Sartorial</h2>
+
+                    <!-- Ratings -->
+                    <div class="flex items-center space-x-2 mt-2 text-xs">
+                        <div class="text-gold-400 space-x-0.5">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span id="modal-rating" class="font-bold text-zinc-200">4.9</span>
+                        <span class="text-zinc-500">(128 avaliações de clientes)</span>
+                    </div>
+
+                    <!-- Price Block -->
+                    <div class="mt-4 p-3 bg-zinc-950 border border-zinc-800 rounded-xl flex items-baseline space-x-3">
+                        <span id="modal-price" class="text-2xl font-bold font-mono text-emerald-400">R$ 299,90</span>
+                        <span id="modal-old-price" class="text-xs font-mono text-zinc-500 line-through">R$ 399,90</span>
+                        <span id="modal-discount" class="text-xs font-bold text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded border border-gold-500/20">25% OFF</span>
+                    </div>
+
+                    <!-- Description -->
+                    <p id="modal-desc" class="text-xs text-zinc-400 mt-4 leading-relaxed">
+                        Desenvolvida com algodão egípcio de fibra longa e acabamento acetinado de alta densidade. Modelagem alfaiataria que ajusta perfeitamente ao corpo masculino sem perder a mobilidade.
+                    </p>
+
+                    <!-- Size Selection -->
+                    <div class="mt-5">
+                        <div class="flex justify-between items-center text-xs mb-2">
+                            <span class="font-semibold text-zinc-300">Selecione o Tamanho:</span>
+                            <button class="text-gold-400 hover:underline text-[11px]"><i class="fa-solid fa-ruler-horizontal"></i> Guia de Medidas</button>
+                        </div>
+                        <div class="flex flex-wrap gap-2" id="modal-sizes-container">
+                            <!-- JS populated size buttons -->
+                        </div>
+                    </div>
+
+                    <!-- Color Display -->
+                    <div class="mt-4">
+                        <span class="font-semibold text-zinc-300 text-xs block mb-2">Cor da Peça:</span>
+                        <div class="flex items-center space-x-2">
+                            <span id="modal-color-dot" class="w-5 h-5 rounded-full border border-zinc-600 inline-block"></span>
+                            <span id="modal-color-name" class="text-xs font-medium text-zinc-300">Azul Marinho Royal</span>
+                        </div>
+                    </div>
+
+                    <!-- Stock Availability Bar -->
+                    <div class="mt-4 pt-3 border-t border-zinc-800 text-xs">
+                        <div class="flex justify-between text-zinc-400 mb-1">
+                            <span>Disponibilidade em Depósito Central:</span>
+                            <span id="modal-stock-count" class="font-mono font-bold text-emerald-400">48 unidades</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 rounded-full h-1.5">
+                            <div id="modal-stock-bar" class="bg-emerald-500 h-1.5 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add to Cart CTA -->
+                <div class="space-y-3 pt-4 border-t border-zinc-800">
+                    <div class="flex gap-3">
+                        <div class="w-24 bg-zinc-950 border border-zinc-800 rounded-xl flex items-center justify-between px-3">
+                            <button onclick="adjustModalQty(-1)" class="text-zinc-400 hover:text-white text-lg">-</button>
+                            <span id="modal-qty-val" class="font-bold font-mono text-sm">1</span>
+                            <button onclick="adjustModalQty(1)" class="text-zinc-400 hover:text-white text-lg">+</button>
+                        </div>
+                        <button onclick="addCurrentModalToCart()" class="flex-1 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-zinc-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-gold-500/20 active:scale-[0.98] transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Drawer Overlay -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-zinc-900 border-l border-zinc-800 flex flex-col justify-between shadow-2xl transition-transform duration-300">
+            
+            <!-- Cart Header -->
+            <div class="p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-gold-400 text-lg"></i>
+                    <h2 class="font-bold text-zinc-100 text-sm tracking-wide uppercase">Seu Carrinho de Compras</h2>
+                </div>
+                <button onclick="toggleCartDrawer()" class="text-zinc-400 hover:text-white text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="p-5 overflow-y-auto flex-1 space-y-4">
+                <!-- JS dynamically injects cart items -->
+            </div>
+
+            <!-- Cart Footer & Summary -->
+            <div class="p-5 border-t border-zinc-800 bg-zinc-950 space-y-4">
+                
+                <!-- Coupon Input -->
+                <div class="flex gap-2">
+                    <input type="text" id="coupon-input" placeholder="Cupom (ex: IMPERIUM10)" class="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs uppercase text-zinc-200 focus:border-gold-500">
+                    <button onclick="applyCoupon()" class="px-3 py-2 bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-200 rounded-lg border border-zinc-700 transition">Aplicar</button>
+                </div>
+
+                <!-- Subtotals -->
+                <div class="space-y-1.5 text-xs text-zinc-400">
+                    <div class="flex justify-between">
+                        <span>Subtotal das peças:</span>
+                        <span id="cart-subtotal" class="font-mono text-zinc-200 font-medium">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Frete Expresso:</span>
+                        <span id="cart-shipping" class="font-mono text-emerald-400 font-medium">GRÁTIS</span>
+                    </div>
+                    <div id="coupon-discount-row" class="flex justify-between text-gold-400 hidden">
+                        <span>Desconto Aplicado:</span>
+                        <span id="coupon-discount-val" class="font-mono">- R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between text-base font-bold text-zinc-100 pt-2 border-t border-zinc-800">
+                        <span>Total do Pedido:</span>
+                        <span id="cart-total" class="font-mono text-gold-400">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Checkout CTA -->
+                <button onclick="openCheckoutModal()" id="btn-proceed-checkout" class="w-full py-4 bg-gradient-to-r from-gold-500 to-gold-600 hover:from-gold-400 hover:to-gold-500 text-zinc-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-gold-500/20 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Finalizar Compra Segura
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Process Modal -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-800 w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            
+            <div class="p-4 border-b border-zinc-800 bg-zinc-950 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-shield-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-zinc-100 text-sm">Ambiente Seguro de Pagamento</h3>
+                        <p class="text-[10px] text-zinc-400">Certificação SSL 256-Bit • Processamento Imediato</p>
+                    </div>
+                </div>
+                <button onclick="closeCheckoutModal()" class="text-zinc-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+                
+                <!-- Step 1: Customer Info -->
+                <div class="space-y-3">
+                    <h4 class="font-bold text-gold-400 uppercase tracking-wider text-[11px] flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gold-500 text-zinc-950 flex items-center justify-center text-[10px] font-bold">1</span>
+                        Dados do Destinatário & Entrega
+                    </h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <input type="text" id="chk-name" placeholder="Nome Completo" value="Carlos Eduardo Silva" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-200 focus:border-gold-500">
+                        <input type="text" id="chk-cpf" placeholder="CPF (Somente Números)" value="123.456.789-00" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-200 focus:border-gold-500">
+                        <input type="text" id="chk-cep" placeholder="CEP (ex: 01001-000)" value="01415-000" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-200 focus:border-gold-500">
+                        <input type="text" id="chk-street" placeholder="Endereço de Entrega" value="Alameda Santos, 1200" class="bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-zinc-200 focus:border-gold-500">
+                    </div>
+                </div>
+
+                <!-- Step 2: Payment Method Selection -->
+                <div class="space-y-3 pt-4 border-t border-zinc-800">
+                    <h4 class="font-bold text-gold-400 uppercase tracking-wider text-[11px] flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-full bg-gold-500 text-zinc-950 flex items-center justify-center text-[10px] font-bold">2</span>
+                        Forma de Pagamento
+                    </h4>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="bg-zinc-950 border-2 border-gold-500 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center hover:bg-zinc-900 transition" id="pay-opt-pix">
+                            <input type="radio" name="payment-method" value="PIX" checked onchange="selectPaymentMethod('PIX')" class="hidden">
+                            <i class="fa-solid fa-qrcode text-emerald-400 text-xl mb-1"></i>
+                            <span class="font-bold text-zinc-100 text-[11px]">PIX Instantâneo</span>
+                            <span class="text-[9px] text-emerald-400 font-bold">5% de Desconto</span>
+                        </label>
+
+                        <label class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center hover:bg-zinc-900 transition" id="pay-opt-card">
+                            <input type="radio" name="payment-method" value="CARD" onchange="selectPaymentMethod('CARD')" class="hidden">
+                            <i class="fa-solid fa-credit-card text-gold-400 text-xl mb-1"></i>
+                            <span class="font-bold text-zinc-100 text-[11px]">Cartão de Crédito</span>
+                            <span class="text-[9px] text-zinc-500">Até 10x sem juros</span>
+                        </label>
+
+                        <label class="bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center hover:bg-zinc-900 transition" id="pay-opt-boleto">
+                            <input type="radio" name="payment-method" value="BOLETO" onchange="selectPaymentMethod('BOLETO')" class="hidden">
+                            <i class="fa-solid fa-barcode text-zinc-400 text-xl mb-1"></i>
+                            <span class="font-bold text-zinc-100 text-[11px]">Boleto Bancário</span>
+                            <span class="text-[9px] text-zinc-500">Aprovação em 1 dia</span>
+                        </label>
+                    </div>
+
+                    <!-- Payment Dynamic Forms -->
+                    <div id="payment-details-box" class="bg-zinc-950 border border-zinc-800 rounded-xl p-4 mt-3">
+                        <!-- JS injects PIX QR code or Credit Card Input fields -->
+                    </div>
+                </div>
+
+                <!-- Order Summary Preview -->
+                <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800 flex justify-between items-center text-xs">
+                    <div>
+                        <span class="text-zinc-400 block">Total a Pagar:</span>
+                        <span id="chk-final-total" class="text-lg font-bold font-mono text-gold-400">R$ 0,00</span>
+                    </div>
+                    <button onclick="processFinalOrder()" class="px-6 py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-zinc-950 font-bold rounded-lg shadow-lg shadow-gold-500/20 hover:scale-105 transition">
+                        Confirmar e Pagar Agora <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist Drawer -->
+    <div id="wishlist-drawer" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="toggleWishlistDrawer()"></div>
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-zinc-900 border-l border-zinc-800 flex flex-col justify-between shadow-2xl">
+            <div class="p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-950">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-gold-400 text-lg"></i>
+                    <h2 class="font-bold text-zinc-100 text-sm tracking-wide uppercase">Sua Lista de Desejos</h2>
+                </div>
+                <button onclick="toggleWishlistDrawer()" class="text-zinc-400 hover:text-white text-lg p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="wishlist-items-container" class="p-5 overflow-y-auto flex-1 space-y-3">
+                <!-- JS Inject -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Global Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+    <!-- Main Footer -->
+    <footer class="bg-zinc-950 border-t border-zinc-800 mt-16 text-zinc-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="space-y-3">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 rounded bg-gold-500 flex items-center justify-center font-serif text-zinc-950 font-bold">I</div>
+                    <span class="font-serif text-lg font-bold text-white tracking-wider">IMPERIUM</span>
+                </div>
+                <p class="text-zinc-500 leading-relaxed">
+                    Referência nacional em alta alfaiataria masculinas, sapataria artesanal e vestuário premium com controle rigoroso de qualidade.
+                </p>
+                <div class="flex space-x-3 text-zinc-400 text-base pt-2">
+                    <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#" class="hover:text-gold-400"><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-zinc-200 uppercase tracking-wider mb-3">Categorias Ativas</h4>
+                <ul class="space-y-2 text-zinc-500">
+                    <li><a href="#catalog-section" onclick="filterByCategory('Ternos & Alfaiataria')" class="hover:text-gold-400">Ternos & Blazers Italianos</a></li>
+                    <li><a href="#catalog-section" onclick="filterByCategory('Camisas & Polos')" class="hover:text-gold-400">Camisas em Algodão Pima</a></li>
+                    <li><a href="#catalog-section" onclick="filterByCategory('Calçados Masculinos')" class="hover:text-gold-400">Sapatos & Loafers Couro Legítimo</a></li>
+                    <li><a href="#catalog-section" onclick="filterByCategory('Acessórios & Relógios')" class="hover:text-gold-400">Acessórios de Couro & Metais</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-zinc-200 uppercase tracking-wider mb-3">Atendimento VIP</h4>
+                <ul class="space-y-2 text-zinc-500">
+                    <li><i class="fa-solid fa-phone text-gold-400 mr-2"></i> 0800 999 5000</li>
+                    <li><i class="fa-solid fa-envelope text-gold-400 mr-2"></i> atendimento@imperiummenswear.com.br</li>
+                    <li><i class="fa-solid fa-location-dot text-gold-400 mr-2"></i> Av. Faria Lima, 3477 - São Paulo / SP</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-zinc-200 uppercase tracking-wider mb-3">Garantia & Sistema</h4>
+                <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-lg space-y-2">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>5.000+ Peças Verificadas</span>
+                    </div>
+                    <p class="text-[10px] text-zinc-500">
+                        Catálogo integrado sem risco de estorno por falta de estoque. Atualização dinâmica a cada transação.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-t border-zinc-900 bg-zinc-950 py-4 text-center text-[11px] text-zinc-600">
+            <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <span>© 2026 IMPERIUM Moda Masculina S.A. Todos os direitos reservados.</span>
+                <span class="font-mono">Sistema com 5.000 peças ativas em banco relacional simulado</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core Application Logic Script -->
+    <script>
+        
+        // High quality fashion stock photos curated per category
+        const CATEGORY_IMAGES = {
+            'Camisas & Polos': [
+                'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1620012253295-c15cc3e65df4?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Camisetas & Basicas': [
+                'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Ternos & Alfaiataria': [
+                'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Calças & Jeans': [
+                'https://images.unsplash.com/photo-1542272604-780c36856842?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Casacos & Jaquetas': [
+                'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Calçados Masculinos': [
+                'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1533867617858-e7b97e060509?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1560343776-97c7d202ff0e?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Acessórios & Relógios': [
+                'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=600&q=80'
+            ],
+            'Moda Praia & Shorts': [
+                'https://images.unsplash.com/photo-1565084888279-aca607ecce0c?auto=format&fit=crop&w=600&q=80',
+                'https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&w=600&q=80'
+            ]
+        };
+
+        const BRANDS = [
+            'IMPERIUM Black Edition',
+            'Sartorial Italia',
+            'Urban Nomad',
+            'Heritage 1984',
+            'Vanguard Tech'
+        ];
+
+        const COLORS = [
+            { name: 'Preto Nobre', hex: '#18181b' },
+            { name: 'Branco Puro', hex: '#f4f4f5' },
+            { name: 'Azul Marinho', hex: '#1e293b' },
+            { name: 'Cinza Grafite', hex: '#475569' },
+            { name: 'Bege Areia', hex: '#d4d4d8' },
+            { name: 'Verde Militar', hex: '#3f6212' },
+            { name: 'Vinho Cabernet', hex: '#881337' },
+            { name: 'Marrom Couro', hex: '#78350f' }
+        ];
+
+        const SIZES = ['PP', 'P', 'M', 'G', 'GG', 'XGG'];
+
+        // Global State Variables
+        let PRODUCTS = [];
+        let FILTERED_PRODUCTS = [];
+        let CART = [];
+        let WISHLIST = [];
+        let CURRENT_PAGE = 1;
+        const ITEMS_PER_PAGE = 32;
+
+        let activeFilters = {
+            category: 'ALL',
+            maxPrice: 2500,
+            size: null,
+            color: null,
+            brand: 'ALL',
+            inStockOnly: true,
+            searchQuery: ''
+        };
+
+        let selectedModalProduct = null;
+        let selectedModalQty = 1;
+        let activeCoupon = null;
+
+        function generate5000Products() {
+            console.time("Generate5000Items");
+            const categories = Object.keys(CATEGORY_IMAGES);
+            
+            const prefixes = ['Terno Slim Fit', 'Camisa Oxford', 'Jaqueta Puffer', 'Blazer Velvet', 'Sapato Oxford', 'Camiseta Pima', 'Polo Piquet', 'Calça Alfaiataria', 'Loafer Couro', 'Sobretudo Lã'];
+            const adjs = ['Imperial', 'Elegance', 'Tech Elastic', 'Minimalist', 'Legacy', 'Sartorial', 'Executive', 'Urban Soft', 'Royal Satin', 'Vintage'];
+            const fabrics = ['Lã Fria Italian', 'Algodão Egípcio', 'Seda Natural', 'Linho Puro', 'Couro Pelica', 'Gabardine', 'Cashmere'];
+
+            const items = [];
+            
+            for (let i = 1; i <= 5000; i++) {
+                const category = categories[i % categories.length];
+                const categoryImgs = CATEGORY_IMAGES[category];
+                const image = categoryImgs[i % categoryImgs.length];
+                
+                const brand = BRANDS[i % BRANDS.length];
+                const colorObj = COLORS[i % COLORS.length];
+                const size = SIZES[i % SIZES.length];
+
+                // Base pricing depending on category
+                let basePrice = 120;
+                if (category.includes('Ternos')) basePrice = 790;
+                if (category.includes('Casacos')) basePrice = 450;
+                if (category.includes('Calçados')) basePrice = 340;
+                if (category.includes('Camisetas')) basePrice = 89;
+
+                // Price variance
+                const priceVariance = (i * 17) % 650;
+                const finalPrice = Math.round(basePrice + priceVariance);
+                const hasDiscount = (i % 3 === 0);
+                const oldPrice = hasDiscount ? Math.round(finalPrice * 1.3) : null;
+
+                const prefix = prefixes[i % prefixes.length];
+                const adj = adjs[i % adjs.length];
+                const fabric = fabrics[i % fabrics.length];
+                
+                const title = `${prefix} ${adj} ${colorObj.name} (${fabric})`;
+                const sku = `IMP-${10000 + i}`;
+                const stock = (i % 7 === 0) ? Math.floor((i % 12) + 1) : Math.floor((i % 80) + 15); // Guaranteed stock
+                const rating = (4.2 + ((i % 8) / 10)).toFixed(1);
+
+                items.push({
+                    id: i,
+                    sku: sku,
+                    title: title,
+                    category: category,
+                    brand: brand,
+                    price: finalPrice,
+                    oldPrice: oldPrice,
+                    size: size,
+                    color: colorObj,
+                    image: image,
+                    stock: stock,
+                    rating: parseFloat(rating),
+                    isFeatured: i % 11 === 0,
+                    description: `Peça confeccionada com estrutura em ${fabric.toLowerCase()}. Modelagem ergonômica ajustada para o homem contemporâneo. Garantia de conforto, caimento impecável e durabilidade extrema.`
+                });
+            }
+
+            console.timeEnd("Generate5000Items");
+            return items;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Generate full dataset of 5,000 pieces
+            PRODUCTS = generate5000Products();
+            FILTERED_PRODUCTS = [...PRODUCTS];
+
+            // Render category pills
+            renderCategoryPills();
+            // Render Size and Color filters
+            renderFilterControls();
+            
+            // Initial render
+            applyFilters();
+            
+            // Update Top Bar Count
+            document.getElementById('top-bar-count').textContent = `${PRODUCTS.length.toLocaleString('pt-BR')} PEÇAS DISPONÍVEIS`;
+            document.getElementById('stat-total-items').textContent = PRODUCTS.length.toLocaleString('pt-BR');
+        });
+
+        function renderCategoryPills() {
+            const container = document.getElementById('category-pills');
+            const categories = ['TODOS OS PRODUTOS (5.000+)', ...Object.keys(CATEGORY_IMAGES)];
+
+            container.innerHTML = categories.map((cat, idx) => {
+                const catValue = idx === 0 ? 'ALL' : cat;
+                const activeClass = activeFilters.category === catValue 
+                    ? 'bg-gold-500 text-zinc-950 font-bold border-gold-500' 
+                    : 'bg-zinc-900 text-zinc-300 hover:border-gold-500/50 border-zinc-800';
+                
+                return `<button onclick="filterByCategory('${catValue}')" class="px-4 py-2 rounded-full text-xs whitespace-nowrap border ${activeClass} transition-all">
+                    ${cat}
+                </button>`;
+            }).join('');
+        }
+
+        function renderFilterControls() {
+            // Render Sizes Filter Grid
+            const sizeGrid = document.getElementById('size-filter-grid');
+            sizeGrid.innerHTML = SIZES.map(sz => {
+                const active = activeFilters.size === sz;
+                return `<button onclick="toggleSizeFilter('${sz}')" class="py-1.5 rounded text-xs font-mono font-semibold border ${active ? 'bg-gold-500 text-zinc-950 border-gold-500' : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:border-zinc-700'}">
+                    ${sz}
+                </button>`;
+            }).join('');
+
+            // Render Colors Filter Grid
+            const colorContainer = document.getElementById('color-filter-container');
+            colorContainer.innerHTML = COLORS.map(c => {
+                const active = activeFilters.color === c.name;
+                return `<button onclick="toggleColorFilter('${c.name}')" title="${c.name}" class="w-6 h-6 rounded-full border-2 ${active ? 'border-gold-400 scale-110' : 'border-zinc-800 hover:scale-105'} transition-all" style="background-color: ${c.hex}">
+                </button>`;
+            }).join('');
+        }
+
+        function applyFilters() {
+            const categorySelect = document.getElementById('filter-category').value;
+            const brandSelect = document.getElementById('filter-brand').value;
+            const inStockCheck = document.getElementById('filter-instock').checked;
+
+            activeFilters.category = categorySelect;
+            activeFilters.brand = brandSelect;
+            activeFilters.inStockOnly = inStockCheck;
+
+            FILTERED_PRODUCTS = PRODUCTS.filter(p => {
+                // Category
+                if (activeFilters.category !== 'ALL' && p.category !== activeFilters.category) return false;
+                // Price
+                if (p.price > activeFilters.maxPrice) return false;
+                // Size
+                if (activeFilters.size && p.size !== activeFilters.size) return false;
+                // Color
+                if (activeFilters.color && p.color.name !== activeFilters.color) return false;
+                // Brand
+                if (activeFilters.brand !== 'ALL' && p.brand !== activeFilters.brand) return false;
+                // Stock
+                if (activeFilters.inStockOnly && p.stock <= 0) return false;
+                // Search
+                if (activeFilters.searchQuery) {
+                    const q = activeFilters.searchQuery.toLowerCase();
+                    const matchTitle = p.title.toLowerCase().includes(q);
+                    const matchSku = p.sku.toLowerCase().includes(q);
+                    const matchCat = p.category.toLowerCase().includes(q);
+                    if (!matchTitle && !matchSku && !matchCat) return false;
+                }
+                return true;
+            });
+
+            CURRENT_PAGE = 1;
+            applySorting();
+            renderCategoryPills();
+            updateFilterSummary();
+        }
+
+        function updatePriceDisplay(val) {
+            document.getElementById('price-val-display').textContent = `R$ ${parseInt(val).toLocaleString('pt-BR')}`;
+            activeFilters.maxPrice = parseInt(val);
+        }
+
+        function toggleSizeFilter(sz) {
+            activeFilters.size = activeFilters.size === sz ? null : sz;
+            renderFilterControls();
+            applyFilters();
+        }
+
+        function toggleColorFilter(colorName) {
+            activeFilters.color = activeFilters.color === colorName ? null : colorName;
+            renderFilterControls();
+            applyFilters();
+        }
+
+        function filterByCategory(cat) {
+            document.getElementById('filter-category').value = cat;
+            applyFilters();
+        }
+
+        function resetAllFilters() {
+            activeFilters = {
+                category: 'ALL',
+                maxPrice: 2500,
+                size: null,
+                color: null,
+                brand: 'ALL',
+                inStockOnly: false,
+                searchQuery: ''
+            };
+            document.getElementById('filter-category').value = 'ALL';
+            document.getElementById('filter-brand').value = 'ALL';
+            document.getElementById('filter-price').value = 2500;
+            document.getElementById('price-val-display').textContent = 'R$ 2.500';
+            document.getElementById('filter-instock').checked = false;
+            document.getElementById('global-search').value = '';
+            document.getElementById('mobile-search').value = '';
+
+            renderFilterControls();
+            applyFilters();
+        }
+
+        function applySorting() {
+            const sortVal = document.getElementById('sort-select').value;
+
+            if (sortVal === 'price-asc') {
+                FILTERED_PRODUCTS.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-desc') {
+                FILTERED_PRODUCTS.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'rating') {
+                FILTERED_PRODUCTS.sort((a, b) => b.rating - a.rating);
+            } else if (sortVal === 'discount') {
+                FILTERED_PRODUCTS.sort((a, b) => {
+                    const discA = a.oldPrice ? (a.oldPrice - a.price) : 0;
+                    const discB = b.oldPrice ? (b.oldPrice - b.price) : 0;
+                    return discB - discA;
+                });
+            } else if (sortVal === 'newest') {
+                FILTERED_PRODUCTS.sort((a, b) => b.id - a.id);
+            } else { // popular
+                FILTERED_PRODUCTS.sort((a, b) => (a.id % 7) - (b.id % 7));
+            }
+
+            renderProductGrid();
+            renderPagination();
+        }
+
+        function updateFilterSummary() {
+            const countEl = document.getElementById('results-count');
+            countEl.textContent = FILTERED_PRODUCTS.length.toLocaleString('pt-BR');
+
+            const activeText = [];
+            if (activeFilters.category !== 'ALL') activeText.push(`Categoria: ${activeFilters.category}`);
+            if (activeFilters.maxPrice < 2500) activeText.push(`Até R$ ${activeFilters.maxPrice}`);
+            if (activeFilters.size) activeText.push(`Tam: ${activeFilters.size}`);
+            if (activeFilters.color) activeText.push(`Cor: ${activeFilters.color}`);
+            if (activeFilters.searchQuery) activeText.push(`Busca: "${activeFilters.searchQuery}"`);
+
+            const summaryEl = document.getElementById('active-filter-summary');
+            summaryEl.textContent = activeText.length > 0 ? activeText.join(' • ') : 'Exibindo catálogo sem restrições';
+        }
+
+        function renderProductGrid() {
+            const grid = document.getElementById('product-grid');
+            const noResults = document.getElementById('no-results');
+
+            if (FILTERED_PRODUCTS.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            const startIndex = (CURRENT_PAGE - 1) * ITEMS_PER_PAGE;
+            const endIndex = startIndex + ITEMS_PER_PAGE;
+            const pageProducts = FILTERED_PRODUCTS.slice(startIndex, endIndex);
+
+            grid.innerHTML = pageProducts.map(p => {
+                const inWishlist = WISHLIST.some(w => w.id === p.id);
+                return `
+                <div class="group bg-zinc-900 border border-zinc-800/80 hover:border-gold-500/50 rounded-xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:shadow-gold-500/5 relative">
+                    
+                    <!-- Top Badge & Wishlist Button -->
+                    <div class="relative overflow-hidden bg-zinc-950 aspect-square">
+                        <img src="${p.image}" alt="${p.title}" loading="lazy" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                        
+                        <div class="absolute top-2 left-2 flex flex-col gap-1">
+                            ${p.oldPrice ? `<span class="bg-gold-500 text-zinc-950 font-bold text-[9px] px-2 py-0.5 rounded tracking-wider uppercase">OFERTA</span>` : ''}
+                            <span class="bg-zinc-900/90 text-zinc-300 border border-zinc-700 text-[9px] px-2 py-0.5 rounded font-mono">${p.size}</span>
+                        </div>
+
+                        <button onclick="toggleWishlist(${p.id}, event)" class="absolute top-2 right-2 w-8 h-8 rounded-full bg-zinc-950/70 hover:bg-zinc-900 border border-zinc-700/80 flex items-center justify-center text-zinc-300 hover:text-gold-400 transition">
+                            <i class="${inWishlist ? 'fa-solid fa-heart text-gold-400' : 'fa-regular fa-heart'} text-xs"></i>
+                        </button>
+
+                        <div class="absolute bottom-2 left-2 right-2 flex justify-between items-center text-[10px] bg-zinc-950/80 backdrop-blur-md px-2 py-1 rounded border border-zinc-800">
+                            <span class="text-zinc-400"><i class="fa-solid fa-boxes-stacked text-gold-400 mr-1"></i> ${p.stock} un.</span>
+                            <span class="text-gold-400 font-bold">★ ${p.rating}</span>
+                        </div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="p-3.5 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest block mb-0.5">${p.brand}</span>
+                            <h3 onclick="openProductModal(${p.id})" class="text-xs font-semibold text-zinc-100 hover:text-gold-400 cursor-pointer transition line-clamp-2 leading-snug">
+                                ${p.title}
+                            </h3>
+                        </div>
+
+                        <div class="mt-3 pt-2 border-t border-zinc-800/80 flex items-baseline justify-between">
+                            <div>
+                                <span class="text-sm font-bold font-mono text-emerald-400">R$ ${p.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+                                ${p.oldPrice ? `<span class="text-[10px] font-mono text-zinc-500 line-through block">R$ ${p.oldPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>` : ''}
+                            </div>
+                            <button onclick="quickAddToCart(${p.id})" class="p-2 rounded-lg bg-zinc-800 hover:bg-gold-500 hover:text-zinc-950 text-zinc-200 border border-zinc-700 hover:border-gold-500 transition" title="Adicionar Rápido">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(FILTERED_PRODUCTS.length / ITEMS_PER_PAGE) || 1;
+            document.getElementById('current-page-num').textContent = CURRENT_PAGE;
+            document.getElementById('total-pages-num').textContent = totalPages;
+
+            const container = document.getElementById('pagination-buttons');
+            let btns = [];
+
+            // Previous page button
+            btns.push(`<button onclick="changePage(${CURRENT_PAGE - 1})" ${CURRENT_PAGE === 1 ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:border-gold-500 transition">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>`);
+
+            // Visible numeric page buttons
+            let startPage = Math.max(1, CURRENT_PAGE - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const active = i === CURRENT_PAGE;
+                btns.push(`<button onclick="changePage(${i})" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold border ${active ? 'bg-gold-500 text-zinc-950 border-gold-500' : 'bg-zinc-900 text-zinc-300 border-zinc-800 hover:border-zinc-700'} transition">
+                    ${i}
+                </button>`);
+            }
+
+            // Next page button
+            btns.push(`<button onclick="changePage(${CURRENT_PAGE + 1})" ${CURRENT_PAGE === totalPages ? 'disabled class="opacity-40 cursor-not-allowed"' : ''} class="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-semibold text-zinc-300 hover:border-gold-500 transition">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>`);
+
+            container.innerHTML = btns.join('');
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(FILTERED_PRODUCTS.length / ITEMS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            CURRENT_PAGE = page;
+            renderProductGrid();
+            renderPagination();
+            window.scrollTo({ top: document.getElementById('catalog-section').offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function handleSearchInput(val) {
+            activeFilters.searchQuery = val.trim();
+            const suggestionsBox = document.getElementById('search-suggestions');
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            if (val.trim().length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+                suggestionsBox.classList.add('hidden');
+            }
+
+            if (val.trim().length >= 2) {
+                const matches = PRODUCTS.filter(p => 
+                    p.title.toLowerCase().includes(val.toLowerCase()) || 
+                    p.sku.toLowerCase().includes(val.toLowerCase())
+                ).slice(0, 5);
+
+                if (matches.length > 0) {
+                    suggestionsBox.innerHTML = matches.map(m => `
+                        <div onclick="openProductModal(${m.id}); document.getElementById('search-suggestions').classList.add('hidden');" class="p-3 hover:bg-zinc-800 cursor-pointer flex items-center gap-3 transition">
+                            <img src="${m.image}" class="w-10 h-10 object-cover rounded bg-zinc-950">
+                            <div>
+                                <h4 class="text-xs font-bold text-zinc-200 line-clamp-1">${m.title}</h4>
+                                <span class="text-[10px] text-emerald-400 font-mono font-semibold">R$ ${m.price.toLocaleString('pt-BR')} • SKU: ${m.sku}</span>
+                            </div>
+                        </div>
+                    `).join('');
+                    suggestionsBox.classList.remove('hidden');
+                } else {
+                    suggestionsBox.innerHTML = `<div class="p-4 text-xs text-zinc-500 text-center">Nenhum resultado direto para "${val}"</div>`;
+                    suggestionsBox.classList.remove('hidden');
+                }
+            } else {
+                suggestionsBox.classList.add('hidden');
+            }
+
+            applyFilters();
+        }
+
+        function clearSearch() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('mobile-search').value = '';
+            handleSearchInput('');
+        }
+
+        function openProductModal(id) {
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+
+            selectedModalProduct = product;
+            selectedModalQty = 1;
+
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-brand').textContent = product.brand;
+            document.getElementById('modal-sku').textContent = `SKU: #${product.sku}`;
+            document.getElementById('modal-title').textContent = product.title;
+            document.getElementById('modal-rating').textContent = product.rating;
+            document.getElementById('modal-price').textContent = `R$ ${product.price.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            
+            const oldPriceEl = document.getElementById('modal-old-price');
+            const discountEl = document.getElementById('modal-discount');
+            if (product.oldPrice) {
+                oldPriceEl.textContent = `R$ ${product.oldPrice.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+                oldPriceEl.classList.remove('hidden');
+                discountEl.classList.remove('hidden');
+            } else {
+                oldPriceEl.classList.add('hidden');
+                discountEl.classList.add('hidden');
+            }
+
+            document.getElementById('modal-desc').textContent = product.description;
+            document.getElementById('modal-stock-count').textContent = `${product.stock} unidades disponíveis`;
+            document.getElementById('modal-stock-bar').style.width = `${Math.min(100, (product.stock / 50) * 100)}%`;
+            
+            document.getElementById('modal-color-dot').style.backgroundColor = product.color.hex;
+            document.getElementById('modal-color-name').textContent = product.color.name;
+
+            // Render modal size options
+            const sizesContainer = document.getElementById('modal-sizes-container');
+            sizesContainer.innerHTML = SIZES.map(sz => `
+                <button class="px-3 py-1.5 rounded text-xs font-mono font-bold border ${sz === product.size ? 'bg-gold-500 text-zinc-950 border-gold-500' : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:border-zinc-700'}">
+                    ${sz}
+                </button>
+            `).join('');
+
+            document.getElementById('modal-qty-val').textContent = '1';
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function adjustModalQty(delta) {
+            selectedModalQty = Math.max(1, Math.min(selectedModalProduct.stock, selectedModalQty + delta));
+            document.getElementById('modal-qty-val').textContent = selectedModalQty;
+        }
+
+        function quickAddToCart(id) {
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+            addToCart(product, 1);
+        }
+
+        function addCurrentModalToCart() {
+            if (selectedModalProduct) {
+                addToCart(selectedModalProduct, selectedModalQty);
+                closeProductModal();
+            }
+        }
+
+        function addToCart(product, qty) {
+            const existing = CART.find(item => item.product.id === product.id);
+            if (existing) {
+                existing.qty = Math.min(product.stock, existing.qty + qty);
+            } else {
+                CART.push({ product: product, qty: qty });
+            }
+
+            updateCartUI();
+            showToast(`Adicionado ao Carrinho: ${product.title.slice(0, 30)}...`, 'success');
+        }
+
+        function removeFromCart(id) {
+            CART = CART.filter(item => item.product.id !== id);
+            updateCartUI();
+            showToast('Item removido do carrinho.', 'info');
+        }
+
+        function updateCartItemQty(id, delta) {
+            const item = CART.find(i => i.product.id === id);
+            if (item) {
+                item.qty = Math.max(1, Math.min(item.product.stock, item.qty + delta));
+                updateCartUI();
+            }
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const totalQty = CART.reduce((acc, curr) => acc + curr.qty, 0);
+            badge.textContent = totalQty;
+
+            const container = document.getElementById('cart-items-container');
+
+            if (CART.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-zinc-500 space-y-3">
+                        <i class="fa-solid fa-bag-shopping text-3xl"></i>
+                        <p class="text-xs">Seu carrinho está vazio.</p>
+                    </div>`;
+            } else {
+                container.innerHTML = CART.map(item => `
+                    <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 flex gap-3 relative">
+                        <img src="${item.product.image}" class="w-16 h-16 object-cover rounded bg-zinc-900 shrink-0">
+                        <div class="flex-1 min-w-0 pr-6">
+                            <h4 class="text-xs font-bold text-zinc-100 line-clamp-1">${item.product.title}</h4>
+                            <span class="text-[10px] text-zinc-500 block font-mono">Tam: ${item.product.size} • SKU: ${item.product.sku}</span>
+                            <span class="text-xs font-bold text-emerald-400 font-mono mt-1 block">R$ ${item.product.price.toLocaleString('pt-BR')}</span>
+                            
+                            <div class="flex items-center space-x-2 mt-2">
+                                <button onclick="updateCartItemQty(${item.product.id}, -1)" class="w-5 h-5 bg-zinc-800 rounded text-xs text-zinc-300">-</button>
+                                <span class="text-xs font-mono font-bold text-zinc-100">${item.qty}</span>
+                                <button onclick="updateCartItemQty(${item.product.id}, 1)" class="w-5 h-5 bg-zinc-800 rounded text-xs text-zinc-300">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.product.id})" class="absolute top-2 right-2 text-zinc-500 hover:text-red-400 p-1">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Calculate Totals
+            const rawSubtotal = CART.reduce((acc, curr) => acc + (curr.product.price * curr.qty), 0);
+            let discount = 0;
+
+            if (activeCoupon === 'IMPERIUM10') discount = rawSubtotal * 0.10;
+            if (activeCoupon === 'VIP20') discount = rawSubtotal * 0.20;
+
+            const finalTotal = Math.max(0, rawSubtotal - discount);
+
+            document.getElementById('cart-subtotal').textContent = `R$ ${rawSubtotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('cart-total').textContent = `R$ ${finalTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+
+            if (discount > 0) {
+                document.getElementById('coupon-discount-row').classList.remove('hidden');
+                document.getElementById('coupon-discount-val').textContent = `- R$ ${discount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('coupon-discount-row').classList.add('hidden');
+            }
+        }
+
+        function applyCoupon() {
+            const input = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (input === 'IMPERIUM10' || input === 'VIP20') {
+                activeCoupon = input;
+                updateCartUI();
+                showToast(`Cupom ${input} aplicado com sucesso!`, 'success');
+            } else {
+                showToast('Cupom inválido. Tente IMPERIUM10', 'error');
+            }
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cart-drawer').classList.toggle('hidden');
+        }
+
+        function toggleWishlist(id, event) {
+            if (event) event.stopPropagation();
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+
+            const idx = WISHLIST.findIndex(w => w.id === id);
+            if (idx >= 0) {
+                WISHLIST.splice(idx, 1);
+                showToast('Removido da lista de desejos.', 'info');
+            } else {
+                WISHLIST.push(product);
+                showToast('Adicionado à sua Lista de Desejos!', 'success');
+            }
+
+            updateWishlistUI();
+            renderProductGrid();
+        }
+
+        function updateWishlistUI() {
+            const badge = document.getElementById('wishlist-badge');
+            badge.textContent = WISHLIST.length;
+            badge.style.opacity = WISHLIST.length > 0 ? '1' : '0';
+
+            const container = document.getElementById('wishlist-items-container');
+            if (WISHLIST.length === 0) {
+                container.innerHTML = `<p class="text-xs text-zinc-500 text-center py-8">Nenhum item salvo na lista.</p>`;
+            } else {
+                container.innerHTML = WISHLIST.map(p => `
+                    <div class="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <img src="${p.image}" class="w-10 h-10 object-cover rounded">
+                            <div>
+                                <h5 class="text-xs font-bold text-zinc-200 line-clamp-1">${p.title}</h5>
+                                <span class="text-[10px] text-emerald-400 font-mono">R$ ${p.price.toLocaleString('pt-BR')}</span>
+                            </div>
+                        </div>
+                        <button onclick="quickAddToCart(${p.id}); toggleWishlist(${p.id});" class="px-2.5 py-1 bg-gold-500 text-zinc-950 font-bold text-[10px] rounded">Comprar</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWishlistDrawer() {
+            document.getElementById('wishlist-drawer').classList.toggle('hidden');
+        }
+
+        function openCheckoutModal() {
+            if (CART.length === 0) {
+                showToast('Adicione pelo menos uma peça ao carrinho para finalizar a compra.', 'error');
+                return;
+            }
+            
+            toggleCartDrawer();
+            selectPaymentMethod('PIX');
+            
+            const rawSubtotal = CART.reduce((acc, curr) => acc + (curr.product.price * curr.qty), 0);
+            let discount = activeCoupon ? rawSubtotal * 0.1 : 0;
+            const total = rawSubtotal - discount;
+
+            document.getElementById('chk-final-total').textContent = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function selectPaymentMethod(method) {
+            const pixOpt = document.getElementById('pay-opt-pix');
+            const cardOpt = document.getElementById('pay-opt-card');
+            const boletoOpt = document.getElementById('pay-opt-boleto');
+            const detailsBox = document.getElementById('payment-details-box');
+
+            pixOpt.className = "bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+            cardOpt.className = "bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+            boletoOpt.className = "bg-zinc-950 border border-zinc-800 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+
+            if (method === 'PIX') {
+                pixOpt.className = "bg-zinc-950 border-2 border-gold-500 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+                detailsBox.innerHTML = `
+                    <div class="text-center space-y-2">
+                        <span class="text-xs text-zinc-300 block font-semibold">Chave PIX Dinâmica Gerada:</span>
+                        <div class="bg-zinc-900 border border-zinc-800 p-3 rounded-lg flex items-center justify-between font-mono text-[10px] text-gold-400">
+                            <span class="truncate">00020126580014BR.GOV.BCB.PIX0136imperium-menswear-5000-items-secure</span>
+                            <button onclick="copyPixCode()" class="ml-2 px-2 py-1 bg-gold-500 text-zinc-950 font-bold rounded">Copiar</button>
+                        </div>
+                        <p class="text-[10px] text-emerald-400">Aprovação imediata do estoque com envio em até 24h.</p>
+                    </div>`;
+            } else if (method === 'CARD') {
+                cardOpt.className = "bg-zinc-950 border-2 border-gold-500 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+                detailsBox.innerHTML = `
+                    <div class="grid grid-cols-2 gap-2 text-xs">
+                        <input type="text" placeholder="Número do Cartão" value="4532 •••• •••• 8892" class="col-span-2 bg-zinc-900 border border-zinc-800 rounded p-2 text-zinc-200">
+                        <input type="text" placeholder="MM/AA" value="11/29" class="bg-zinc-900 border border-zinc-800 rounded p-2 text-zinc-200">
+                        <input type="text" placeholder="CVV" value="882" class="bg-zinc-900 border border-zinc-800 rounded p-2 text-zinc-200">
+                    </div>`;
+            } else {
+                boletoOpt.className = "bg-zinc-950 border-2 border-gold-500 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer text-center";
+                detailsBox.innerHTML = `
+                    <div class="text-center text-xs text-zinc-400">
+                        O boleto será gerado no nome do titular cadastrado. Vencimento em 3 dias úteis.
+                    </div>`;
+            }
+        }
+
+        function copyPixCode() {
+            showToast('Código PIX copiado para a área de transferência!', 'success');
+        }
+
+        function processFinalOrder() {
+            // Deduct inventory dynamically
+            CART.forEach(item => {
+                const p = PRODUCTS.find(prod => prod.id === item.product.id);
+                if (p) {
+                    p.stock = Math.max(0, p.stock - item.qty);
+                }
+            });
+
+            CART = [];
+            updateCartUI();
+            closeCheckoutModal();
+
+            showToast('PEDIDO REALIZADO COM SUCESSO! Rastreio enviado para seu e-mail.', 'success');
+            renderProductGrid();
+        }
+
+        function toggleAdminView() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.toggle('hidden');
+
+            if (!modal.classList.contains('hidden')) {
+                renderAdminTable(PRODUCTS.slice(0, 50));
+            }
+        }
+
+        function renderAdminTable(items) {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = items.map(p => `
+                <tr class="hover:bg-zinc-900/80 transition">
+                    <td class="p-3 text-gold-400 font-bold">${p.sku}</td>
+                    <td class="p-3 text-zinc-200 font-sans font-medium line-clamp-1">${p.title}</td>
+                    <td class="p-3 text-zinc-400 font-sans">${p.category}</td>
+                    <td class="p-3 text-emerald-400">R$ ${p.price.toLocaleString('pt-BR')}</td>
+                    <td class="p-3">
+                        <input type="number" value="${p.stock}" onchange="updateStockDirect(${p.id}, this.value)" class="w-16 bg-zinc-950 border border-zinc-800 rounded px-2 py-0.5 text-center text-gold-400 font-bold">
+                    </td>
+                    <td class="p-3">
+                        <span class="px-2 py-0.5 rounded text-[9px] ${p.stock > 10 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}">
+                            ${p.stock > 0 ? 'EM ESTOQUE' : 'ESGOTADO'}
+                        </span>
+                    </td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteProductAdmin(${p.id})" class="text-zinc-500 hover:text-red-400 p-1"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function filterAdminTable(query) {
+            const q = query.toLowerCase();
+            const matches = PRODUCTS.filter(p => p.title.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)).slice(0, 50);
+            renderAdminTable(matches);
+        }
+
+        function updateStockDirect(id, newStock) {
+            const p = PRODUCTS.find(item => item.id === id);
+            if (p) {
+                p.stock = parseInt(newStock) || 0;
+                showToast(`Estoque da peça ${p.sku} atualizado para ${p.stock} unidades!`, 'info');
+                renderProductGrid();
+            }
+        }
+
+        function deleteProductAdmin(id) {
+            PRODUCTS = PRODUCTS.filter(p => p.id !== id);
+            applyFilters();
+            renderAdminTable(PRODUCTS.slice(0, 50));
+            showToast('Peça removida do inventário.', 'info');
+        }
+
+        function simulateAddProduct() {
+            const newId = PRODUCTS.length + 1;
+            const newProd = {
+                id: newId,
+                sku: `IMP-${10000 + newId}`,
+                title: `Nova Peça Exclusiva Linha Tailoring #${newId}`,
+                category: 'Ternos & Alfaiataria',
+                brand: 'IMPERIUM Black Edition',
+                price: 1290,
+                oldPrice: 1590,
+                size: 'M',
+                color: COLORS[0],
+                image: CATEGORY_IMAGES['Ternos & Alfaiataria'][0],
+                stock: 50,
+                rating: 5.0,
+                description: 'Lançamento exclusivo de alfaiataria fina.'
+            };
+
+            PRODUCTS.unshift(newProd);
+            applyFilters();
+            renderAdminTable(PRODUCTS.slice(0, 50));
+            showToast('Novo produto cadastrado com sucesso!', 'success');
+        }
+
+        function reseedDatabase() {
+            PRODUCTS = generate5000Products();
+            applyFilters();
+            renderAdminTable(PRODUCTS.slice(0, 50));
+            showToast('Catálogo de 5.000 peças regenerado com sucesso!', 'success');
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+
+            let borderClass = 'border-gold-500/50';
+            let icon = '<i class="fa-solid fa-circle-check text-gold-400"></i>';
+
+            if (type === 'error') {
+                borderClass = 'border-red-500/50';
+                icon = '<i class="fa-solid fa-triangle-exclamation text-red-400"></i>';
+            }
+
+            toast.className = `glass-panel border ${borderClass} text-zinc-100 text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 animate-bounce pointer-events-auto transition-all max-w-sm`;
+            toast.innerHTML = `${icon} <span class="font-medium">${message}</span>`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function resetFiltersAndHome() {
+            resetAllFilters();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
